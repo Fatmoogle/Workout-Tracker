@@ -17,7 +17,8 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
   // Default is true. Setting to false allows findOneAndUpdate() to be used rather than 
   // findAndModify()
   useFindAndModify: false,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useCreateIndex: true
 });
 
 // Defining out HTML and API routes to use
