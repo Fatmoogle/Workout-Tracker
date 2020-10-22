@@ -6,7 +6,6 @@ const workoutSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    
     exercises: [
         {
             name: {
@@ -14,65 +13,43 @@ const workoutSchema = new Schema({
                 trim: true,
                 required: "Please enter a name for the exercise."
             },
-
             type: {
                 type: String,
                 trim: true,
                 required: "Please enter the type of exercise."
             },
-
             weight: {
                 type: Number
             },
-
             sets: {
                 type: Number
             },
-
             reps: {
                 type: Number
             },
-
             duration: {
                 type: Number,
                 required: "Please enter the duration of your session"
             },
-
             // distance is used only if the user had a cardio workout
             distance: {
                 type: Number
             }
         }
     ]
+},
+    {
+    toJSON: {
+        virtuals: true
+    }
 });
 
-const workout = mongoose.model("workout", workoutSchema);
+workoutSchema.virtual("totalDuration").get(function () {
+    return this.exercises.reduce((total, exercise) => {
+      return total + exercise.duration;
+    }, 0);
+});
 
-module.exports = workout;
+const Workout = mongoose.model("Workout", workoutSchema);
 
-// * As a user, I want to be able to view create and track daily workouts. I want to be able to log multiple exercises in a workout on a given day. I should also be able to track the name, type, weight, sets, reps, and duration of exercise. If the exercise is a cardio exercise, I should be able to track my distance traveled.
-
-
-// const mongoose = require("mongoose");
-
-// const Schema = mongoose.Schema;
-
-// const transactionSchema = new Schema({
-//   name: {
-//     type: String,
-//     trim: true,
-//     required: "Enter a name for transaction"
-//   },
-//   value: {
-//     type: Number,
-//     required: "Enter an amount"
-//   },
-//   date: {
-//     type: Date,
-//     default: Date.now
-//   }
-// });
-
-// const Transaction = mongoose.model("Transaction", transactionSchema);
-
-// module.exports = Transaction;
+module.exports = Workout;

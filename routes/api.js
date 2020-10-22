@@ -36,7 +36,8 @@ router.put("/api/workouts/:id", (req, res) => {
 // This route will retrieve the last 7 entries in the database and will enable
 // them to be displayed by the graph
 router.get("/api/workouts/range", (req, res) => {
-    Workout.find({}).limit(7)
+    Workout.find({})
+    .limit(7)
     .then(data => {
         res.json(data);
     }).catch(err => {
